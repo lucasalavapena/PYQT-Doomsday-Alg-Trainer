@@ -85,8 +85,8 @@ class MyWindow(QMainWindow):
         if (self.time != 0):
             self.time = 0
         self.label.setStyleSheet('color: black')
-        self.date2BAsked = randDate(self.earliestDate,self.LatestDate)
-        self.correctAnswer = correctWeekday(self.date2BAsked)
+        self.date2BAsked = rand_date(self.earliestDate, self.LatestDate)
+        self.correctAnswer = correct_weekday(self.date2BAsked)
         self.dateAsked.setText( self.date2BAsked.strftime("%B %d, %Y") )
         self.dateAsked.move(50, 50)
         self.dateAsked.setFont(QFont('Arial', 30))
@@ -119,7 +119,7 @@ class MyWindow(QMainWindow):
         self.label.setStyleSheet('color: red')
 
         if (self.feedback):
-            self.feedbackText.setText(workedDate(self.date2BAsked))
+            self.feedbackText.setText(worked_date(self.date2BAsked))
             self.feedbackText.adjustSize()
 
 
