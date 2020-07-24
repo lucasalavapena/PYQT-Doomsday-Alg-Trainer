@@ -1,15 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtGui import QFont
-from PyQt5.QtCore import QTimer, QTime,Qt,QDateTime
-from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
-from dd_alg import *
+
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtCore import QTimer, Qt, QDateTime
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
 from game_stats import *
-
-
-
 
 
 class MyWindow(QMainWindow):
@@ -19,18 +17,14 @@ class MyWindow(QMainWindow):
         self.initSettings()
         self.initUI()
 
-
         self.time = 0
         self.timer = QTimer()
-        self.timer.setInterval(2**6)
+        self.timer.setInterval(2 ** 6)
         self.timer.timeout.connect(self.updateTimer)
 
     # def button_clicked(self):
     #     self.label.setText('you pressed the button')
     #     self.update()
-
-
-
 
     def initUI(self):
         self.setWindowTitle('Doomsday Trainer')
@@ -60,25 +54,25 @@ class MyWindow(QMainWindow):
         self.SatKey = QtCore.Qt.Key_5
         self.SunKey = QtCore.Qt.Key_6
         self.KeyDay = {self.MonKey: 0,
-                        self.TueKey: 1,
-                        self.WedKey: 2,
-                        self.ThuKey: 3,
-                        self.FriKey: 4,
-                        self.SatKey: 5,
-                        self.SunKey: 6 }
+                       self.TueKey: 1,
+                       self.WedKey: 2,
+                       self.ThuKey: 3,
+                       self.FriKey: 4,
+                       self.SatKey: 5,
+                       self.SunKey: 6}
 
         self.earliestDate = datetime.datetime(1800, 1, 1, 0, 0, 0)
         self.LatestDate = datetime.datetime.now()
 
     def updateDisplay(self):
-        self.label.setText("{:02d}:{:.3f}".format(math.floor(self.time/60), round(self.time %60,3)))
+        self.label.setText("{:02d}:{:.3f}".format(math.floor(self.time / 60), round(self.time % 60, 3)))
         self.label.adjustSize()
 
     def update(self):
         self.label.adjustSize()
 
     def updateTimer(self):
-        self.time += 2**6/1000
+        self.time += 2 ** 6 / 1000
         self.updateDisplay()
 
     def startTimer(self):
@@ -87,15 +81,14 @@ class MyWindow(QMainWindow):
         self.label.setStyleSheet('color: black')
         self.date2BAsked = rand_date(self.earliestDate, self.LatestDate)
         self.correctAnswer = correct_weekday(self.date2BAsked)
-        self.dateAsked.setText( self.date2BAsked.strftime("%B %d, %Y") )
+        self.dateAsked.setText(self.date2BAsked.strftime("%B %d, %Y"))
         self.dateAsked.move(50, 50)
         self.dateAsked.setFont(QFont('Arial', 30))
         self.dateAsked.adjustSize()
 
-        self.gameStats = gameStat(QDateTime.currentDateTime().toPyDateTime(),self.date2BAsked,self.feedback)
+        self.gameStats = gameStat(QDateTime.currentDateTime().toPyDateTime(), self.date2BAsked, self.feedback)
         self.doingTest = True
         self.timer.start()
-
 
     def stopTimer(self):
         self.timer.stop()
@@ -107,12 +100,12 @@ class MyWindow(QMainWindow):
     #     palette.setColor(self.label.foregroundRole(), color)
     #     self.Label.setPalette(palette)
 
-
     def correctlyAnswered(self):
         print("yeeeeet")
         self.stopTimer()
         # self.changeLabelColor(self.label,QtGui.QColor(25,255,25))
         self.label.setStyleSheet('color: green')
+
     def incorrectlyAnswered(self):
         print("ooof.")
         self.stopTimer()
@@ -122,16 +115,13 @@ class MyWindow(QMainWindow):
             self.feedbackText.setText(worked_date(self.date2BAsked))
             self.feedbackText.adjustSize()
 
-
-
-
     def keyPressEvent(self, e):
 
         if self.doingTest == True:
             # if e.key() == QtCore.Qt.Key_0 or QtCore.Qt.Key_1 or QtCore.Qt.Key_2 or QtCore.Qt.Key_3 or QtCore.Qt.Key_4 or QtCore.Qt.Key_5 or QtCore.Qt.Key_6:
             if e.key() in self.KeyDay:
 
-                if self.KeyDay[e.key()] == self.correctAnswer :
+                if self.KeyDay[e.key()] == self.correctAnswer:
                     self.correctlyAnswered()
                     self.gameStats.setguessedCorrectly(True)
                 else:
@@ -152,7 +142,7 @@ class MyWindow(QMainWindow):
         if e.key() == QtCore.Qt.Key_Q and self.doingTest == False:
             self.close()
 
-    def timer(self,e):
+    def timer(self, e):
         if e.type() == QtCore.QEvent.KeyPress and e.key() == self.actionKey:
             print("Hi")
 
@@ -163,5 +153,6 @@ def window():
     win.resize(500, 500)
     win.show()
     sys.exit(app.exec_())
+
 
 window()
