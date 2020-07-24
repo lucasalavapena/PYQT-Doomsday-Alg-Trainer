@@ -1,4 +1,8 @@
-#Day of the week
+"""
+dd_alg is the doomsday algorithm module and also generates the date.
+
+"""
+
 
 import random
 import datetime
@@ -12,7 +16,8 @@ def rand_date(earliest_date, latest_date):
     :return: a random date between the two parameters given
     """
     difference_date_seconds = (latest_date - earliest_date).total_seconds()
-    date = earliest_date + datetime.timedelta(seconds=random.randint(0, int(difference_date_seconds)))
+    date = earliest_date + datetime.timedelta(seconds=random.randint(0,
+                                                                     int(difference_date_seconds)))
     return date
 
 def correct_weekday(date):
@@ -23,7 +28,7 @@ def correct_weekday(date):
     """
     return (date.weekday() + 1) % 7
 
-def anchor_day(year):
+def calculate_anchor_day(year):
     """
 
     :param year:
@@ -50,20 +55,15 @@ def worked_date(date):
     :param date:
     :return:
     """
-    # Initialised variableshttps://en.wikipedia.org/wiki/Doomsday_rule#The_%22odd_+_11%22_method
-    # hardcoded days can use: anchor_day(year)
-    anchor_days = {1800: 5,
-                   1900: 3,
-                   2000: 2,
-                   2100: 0}
 
-    dayOfWeek = {0: "Sunday",
-                 1: "Monday",
-                 2: "Tuesday",
-                 3: "Wednesday",
-                 4: "Thursday",
-                 5: "Friday",
-                 6: "Saturday"}
+
+    day_dict = {0: "Sunday",
+                1: "Monday",
+                2: "Tuesday",
+                3: "Wednesday",
+                4: "Thursday",
+                5: "Friday",
+                6: "Saturday"}
 
     # need ddalg_step2 better way of doign this
     doomsday_non_leap = {1: [3, 10, 17, 24, 31],
@@ -95,18 +95,18 @@ def worked_date(date):
     date_str = date.strftime("%B %d, %Y")
     help_text = "1. The Date in question is {}.\n".format(date_str)
 
+    year = date.year
     # doomsday
-    ddalg_step1 = (date.year) % 100
+    ddalg_step1 = (year) % 100
     ddalg_step2 = math.floor(ddalg_step1/12)
     ddalg_step3 = ddalg_step1 % 12
     ddalg_step4 = math.floor(ddalg_step3 / 4)
 
-    anchorday_key = math.floor(date.year / 100) * 100
-    anchor_day = anchor_days.get(anchorday_key)
+    anchor_day = calculate_anchor_day(year)
     help_text += """2. The anchor day is {0} as the date is in the {1}s.
     This can either be memorized or calculated using: 5 * (century % 2) % 7 + 2.
      \n \t In this case: 5 * ({2} % 2) % 7 + 2 = {0}\n""".format(
-         anchor_day, anchorday_key, int(anchorday_key/100))
+         anchor_day, math.floor(year/100)*100, math.floor(year/100))
 
     doomsday = ((ddalg_step2+ddalg_step3+ddalg_step4) % 7 + anchor_day) % 7
 
@@ -137,11 +137,10 @@ def worked_date(date):
         closet_doomsday = doomsday_non_leap.get(date.month)[0]
         day_of_week = ((date.day - closet_doomsday) + doomsday) % 7
         help_text += "The year {} is not ddalg_step2 leap year.\n".format(date.year)
-
-    help_text += "5. Now we must find the closest doomsday to the {}, that in this case would be {}.\n".format(
-        date_str, closet_doomsday)
-    help_text += "6. Simply computing the differences we finally get that the day of the week is {} ie {}".format(
-        day_of_week, dayOfWeek[day_of_week])
+    help_text += """5. Now we must find the closest doomsday to the {}, that in this case would
+     be {}.\n""".format(date_str, closet_doomsday)
+    help_text += """6. Simply computing the differences we finally get that the day of
+    the week is {} ie {}""".format(day_of_week, day_dict[day_of_week])
 
     # print('date: {} '.format(currentDate))
     # print('actual: {} vs mine: {}'.format((currentDate.weekday()+ 1 )% 7,day_of_week))
@@ -154,10 +153,10 @@ def main():
     :return:
     """
     # worked_date(datetime.datetime(1922, 3, 1, 0, 0, 0))
-    print(anchor_day(1800))
-    print(anchor_day(1932))
-    print(anchor_day(2012))
-    print(anchor_day(1723))
+    print(calculate_anchor_day(1800))
+    print(calculate_anchor_day(1932))
+    print(calculate_anchor_day(2012))
+    print(calculate_anchor_day(1723))
 
     # this is wrong
 
