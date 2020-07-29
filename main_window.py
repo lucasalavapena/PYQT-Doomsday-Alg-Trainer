@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, QTimer, QDateTime
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QMainWindow
 from dd_alg import rand_date, correct_weekday, worked_date
-from gamestats import GameStats
+from game_stats import GameStats
 
 class MainWindow(QMainWindow):
     """
@@ -141,7 +141,3 @@ class MainWindow(QMainWindow):
 
         if event.key() == QtCore.Qt.Key_Q and self.doing_test:
             self.close()
-
-    def timer(self, event):
-        if event.type() == QtCore.QEvent.KeyPress and event.key() == self.action_key:
-            print("Hi")
