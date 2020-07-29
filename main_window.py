@@ -131,9 +131,6 @@ class MainWindow(QMainWindow):
 
                 self.game_stats.set_weekday_guessed(self.key_day[event.key()])
                 self.game_stats.write_to_csv()
-            # if e.key() == self.actionKey2:
-            #     print("bye")
-            #     self.stop_timer()
 
         if self.doing_test == False:
             if event.key() == self.action_key:
