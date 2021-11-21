@@ -7,8 +7,7 @@ import math
 import os
 
 
-
-class GameStats():
+class GameStats:
     """
     Class
     """
@@ -80,17 +79,32 @@ class GameStats():
         """
 
         csv_filename = "Stats.csv"
-        row = [self.start_time, self.date_asked, self.weekday_guessed, self.correct_guess,
-               round(self.time_taken, 3), self.feedback_status]
+        row = [
+            self.start_time,
+            self.date_asked,
+            self.weekday_guessed,
+            self.correct_guess,
+            round(self.time_taken, 3),
+            self.feedback_status,
+        ]
 
         if os.path.isfile(csv_filename):
-            with open(csv_filename, 'a') as csv_file:
+            with open(csv_filename, "a") as csv_file:
                 writer = csv.writer(csv_file)
                 writer.writerow(row)
         else:
-            csv_data = [["Start Time", "Date Asked", "Weekday Guessed [0-6]",
-                         "Guessed Correctly [T/F]", "Time [s]", "Feedback Status"], row]
-            with open(csv_filename, 'w') as csv_file:
+            csv_data = [
+                [
+                    "Start Time",
+                    "Date Asked",
+                    "Weekday Guessed [0-6]",
+                    "Guessed Correctly [T/F]",
+                    "Time [s]",
+                    "Feedback Status",
+                ],
+                row,
+            ]
+            with open(csv_filename, "w") as csv_file:
                 writer = csv.writer(csv_file)
                 writer.writerows(csv_data)
         csv_file.close()
@@ -108,7 +122,7 @@ def compute_ao_x(times, no_times):
     discard_ids = math.ceil(len(x_times) / 20)
 
     # Removing best times and worst time
-    sorted_list = sorted_list[discard_ids:-(discard_ids + 1)]
+    sorted_list = sorted_list[discard_ids : -(discard_ids + 1)]
 
     print(sorted_list)
     return sum(sorted_list) / len(sorted_list)
@@ -122,9 +136,23 @@ def main():
     # test = GameStats(1,datetime.datetime(1800, 1, 1, 0, 0, 0),True)
     #
     # test.write_to_csv()
-    times = [15.56, 13.91, 16, 44, 19.10, 15.87, 17.20, 17.09, 14.46, 15.91, 15.04, 14.90, 15.48]
+    times = [
+        15.56,
+        13.91,
+        16,
+        44,
+        19.10,
+        15.87,
+        17.20,
+        17.09,
+        14.46,
+        15.91,
+        15.04,
+        14.90,
+        15.48,
+    ]
     print(compute_ao_x(times, 12))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

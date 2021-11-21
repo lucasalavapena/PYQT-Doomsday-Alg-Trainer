@@ -7,10 +7,12 @@ from PyQt5.QtWidgets import QMainWindow
 from dd_alg import rand_date, correct_weekday, worked_date
 from game_stats import GameStats
 
+
 class MainWindow(QMainWindow):
     """
     Main Window Class
     """
+
     def __init__(self):
         super(MainWindow, self).__init__()
         self.init_settings()
@@ -20,16 +22,17 @@ class MainWindow(QMainWindow):
         self.timer.setInterval(2 ** 6)
         self.timer.timeout.connect(self.update_timer)
         print(1)
+
     # def button_clicked(self):
     #     self.label.setText('you pressed the button')
     #     self.update()
 
     def init_ui(self):
-        self.setWindowTitle('Doomsday Trainer')
+        self.setWindowTitle("Doomsday Trainer")
         self.label = QtWidgets.QLabel(self)
 
         self.label.setAlignment(Qt.AlignCenter)
-        self.label.setText('You know what to do :))')
+        self.label.setText("You know what to do :))")
         self.label.move(150, 150)
         self.label.adjustSize()
         self.date_asked = QtWidgets.QLabel(self)
@@ -51,20 +54,23 @@ class MainWindow(QMainWindow):
         self.fri_key = QtCore.Qt.Key_4
         self.sat_key = QtCore.Qt.Key_5
         self.sun_key = QtCore.Qt.Key_6
-        self.key_day = {self.mon_key: 0,
-                        self.tue_key: 1,
-                        self.wed_key: 2,
-                        self.thu_key: 3,
-                        self.fri_key: 4,
-                        self.sat_key: 5,
-                        self.sun_key: 6}
+        self.key_day = {
+            self.mon_key: 0,
+            self.tue_key: 1,
+            self.wed_key: 2,
+            self.thu_key: 3,
+            self.fri_key: 4,
+            self.sat_key: 5,
+            self.sun_key: 6,
+        }
 
         self.earliest_date = datetime.datetime(1800, 1, 1, 0, 0, 0)
         self.latest_date = datetime.datetime.now()
 
     def update_display(self):
-        self.label.setText("{:02d}:{:.3f}".format(math.floor(self.time / 60),
-                                                  round(self.time % 60, 3)))
+        self.label.setText(
+            "{:02d}:{:.3f}".format(math.floor(self.time / 60), round(self.time % 60, 3))
+        )
         self.label.adjustSize()
 
     def update(self):
@@ -77,16 +83,19 @@ class MainWindow(QMainWindow):
     def startTimer(self):
         if self.time != 0:
             self.time = 0
-        self.label.setStyleSheet('color: black')
+        self.label.setStyleSheet("color: black")
         self.generated_date = rand_date(self.earliest_date, self.latest_date)
         self.correct_answer = correct_weekday(self.generated_date)
         self.date_asked.setText(self.generated_date.strftime("%B %d, %Y"))
         self.date_asked.move(50, 50)
-        self.date_asked.setFont(QFont('Arial', 30))
+        self.date_asked.setFont(QFont("Arial", 30))
         self.date_asked.adjustSize()
 
-        self.game_stats = GameStats(QDateTime.currentDateTime().toPyDateTime(),
-                                    self.generated_date, self.feedback)
+        self.game_stats = GameStats(
+            QDateTime.currentDateTime().toPyDateTime(),
+            self.generated_date,
+            self.feedback,
+        )
         self.doing_test = True
         self.timer.start()
 
@@ -104,7 +113,7 @@ class MainWindow(QMainWindow):
         print("yeeeeet")
         self.stop_timer()
         # self.changeLabelColor(self.label,QtGui.QColor(25,255,25))
-        self.label.setStyleSheet('color: green')
+        self.label.setStyleSheet("color: green")
 
     def incorrectly_answered(self):
         """
@@ -113,7 +122,7 @@ class MainWindow(QMainWindow):
         """
         print("ooof.")
         self.stop_timer()
-        self.label.setStyleSheet('color: red')
+        self.label.setStyleSheet("color: red")
 
         if self.feedback:
             self.feedback_text.setText(worked_date(self.generated_date))
